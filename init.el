@@ -15,8 +15,6 @@
 
 (require 'setup-helm)
 
-(use-package ensime
-  :ensure t)
 
 (require 'helm-gtags)
 (helm-gtags-mode 1)
@@ -52,6 +50,17 @@
 
 
 
+(require 'irony)
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+(defun my-irony-mode-hook ()
+  (define-key irony-mode-map [remap-completion-at-point]
+    'irony-completion-at-point-async)
+  (define-key irony-mode-map [remap-complete-symbol]
+    'irony-completion-at-point-async))
+(add-hook 'irony-mode-hook 'my-irony-mode-hook)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
 
 (require 'company)
@@ -65,13 +74,10 @@
 (electric-pair-mode 1)
 
 
-(require 'cedet)
 (require 'cc-mode)
-(require 'semantic)
-(global-semanticdb-minor-mode 1)
-(global-semantic-idle-scheduler-mode 1)
-(semantic-mode 1)
 (require 'scala-mode)
+
+(require 'rust-mode)
 ;; function-args
 ;; (require 'function-args)
 ;; (fa-config-default)
@@ -88,7 +94,7 @@
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
-    (slime-company slime ensime scala-mode company-irony-c-headers company-irony irony company-c-headers zygospore helm-gtags helm yasnippet ws-butler volatile-highlights use-package undo-tree iedit dtrt-indent counsel-projectile company clean-aindent-mode anzu)))
+    (cargo rust-mode slime-company slime scala-mode company-irony-c-headers company-irony irony company-c-headers zygospore helm-gtags helm yasnippet ws-butler volatile-highlights use-package undo-tree iedit dtrt-indent counsel-projectile company clean-aindent-mode anzu)))
  '(safe-local-variable-values
    (quote
     ((company-clang-arguments "-I/home/william/c-demo-project/include1/." "-I/home/william/c-demo-project/include2")
